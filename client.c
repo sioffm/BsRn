@@ -17,30 +17,30 @@ void message_loop(int connfd)
 {
     char message[MAX];
     int n;
-    // infinite loop for chat
+    // infinite loop for chat // unendliche Schleife für den Chat
     while (1)
     {
-        // read the local message
+        // read the local message // liest die Nachricht
         printf("> ");
         if (fgets(message, MAX, stdin) == NULL)
         {
-            // the user introduced Ctrl-D
+            // the user introduced Ctrl-D // beenden mit Strg+D
             break;
         }
         else
         {
-            // send the message to the remote machine
+            // send the message to the remote machine // sendet die Nachricht zur Remote Machine
             write(connfd, message, sizeof(message));
         }
 
-        // clears the content of the message
+        // clears the content of the message // löscht die Nachrichten
         bzero(message, MAX);
-        // read the message from remote machine
+        // read the message from remote machine // ließt die Nachrichten vom Remote Machine
         read(connfd, message, sizeof(message));
-        // print the incoming message
+        // print the incoming message //zeigt die erhaltende Nachricht
         printf("Received: %s\n", message);
 
-        // clears the content of the message
+        // clears the content of the message // löscht die Nachricht vom Remote Machine
         bzero(message, MAX);
     }
 }
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     const char *host = argv[1];
 
     struct hostent *hostinfo;
-    // Get host information by name
+    // Get host information by name //??
     hostinfo = gethostbyname(host);
     if (hostinfo == NULL)
     {
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    // get the first host address
+    // get the first host address // erhält die Ip-Adresse
     struct in_addr *server_address;
     struct in_addr **addr_list = (struct in_addr **)hostinfo->h_addr_list;
     for (int i = 0; addr_list[i] != NULL; i++)
@@ -78,11 +78,11 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    // connect to the server
+    // connect to the server // Verbindung zum Server
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;
 
-    // socket create and verification
+    // socket create and verification // erstellt und überprüft socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1)
     {
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     servaddr.sin_addr.s_addr = server_address->s_addr;
     servaddr.sin_port = htons(PORT);
 
-    // connect the client socket to server socket
+    // connect the client socket to server socket // verbindet den client socket und den server socket
     if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) != 0)
     {
         printf("connection with the server failed...\n");
@@ -111,9 +111,9 @@ int main(int argc, char *argv[])
         printf("connected to the server..\n");
     }
 
-    // function for chat
+    // function for chat //funktion des Chats
     message_loop(sockfd);
 
-    // close the socket
+    // close the socket //schließt den Chat
     close(sockfd);
 }
