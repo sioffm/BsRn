@@ -49,35 +49,12 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        printf("Usage: chat <host name>\n");
+        printf("Usage: client <server IP address>\n");
         exit(1);
     }
 
     const char *host = argv[1];
-
-    struct hostent *hostinfo;
-    // Get host information by name //??
-    hostinfo = gethostbyname(host);
-    if (hostinfo == NULL)
-    {
-        printf("Error getting host information\n");
-        exit(1);
-    }
-
-    // get the first host address // erhält die Ip-Adresse
-    struct in_addr *server_address;
-    struct in_addr **addr_list = (struct in_addr **)hostinfo->h_addr_list;
-    for (int i = 0; addr_list[i] != NULL; i++)
-    {
-        server_address = addr_list[i];
-        break;
-    }
-    if (server_address == NULL)
-    {
-        printf("Host found but contains 0 addresses");
-        exit(1);
-    }
-
+    
     // connect to the server // Verbindung zum Server
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;
@@ -97,7 +74,7 @@ int main(int argc, char *argv[])
 
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = server_address->s_addr;
+    servaddr.sin_addr.s_addr = inet_addr(host);
     servaddr.sin_port = htons(PORT);
 
     // connect the client socket to server socket // verbindet den client socket und den server socket
