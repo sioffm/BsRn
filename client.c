@@ -24,7 +24,7 @@ void message_loop(int connfd)
         printf("> ");
         if (fgets(message, MAX, stdin) == NULL)
         {
-            // the user introduced Ctrl-D //
+            // the user introduced Strg+D //
             break;
         }
         else
