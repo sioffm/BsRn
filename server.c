@@ -13,7 +13,7 @@
 // Read message from remote machine and print it,
 // then read the message from the local machine and
 // send it to the remote one.
-void message_loop(int connfd) //connfd connection file desciptor
+void message_loop(int connfd) //connfd connection file descriptor
 {
     char message[MAX];
     int n;
